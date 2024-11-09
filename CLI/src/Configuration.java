@@ -37,11 +37,11 @@ public class Configuration {
     private int maxTicketCapacity;
 
 
-    public displayConfig(){
-        System.out.println("Number of Total Tickets:-");
-        System.out.println("Release Rate Per Second:-");
-        System.out.println("Retrievel Rate per Second:-");
-        System.out.println("Max capacity");
+    public void displayConfig(){
+        System.out.println("Number of Total Tickets:-"+ totalTickets);
+        System.out.println("Release Rate Per Second:-"+ticketReleaseRate);
+        System.out.println("Retrieve Rate per Second:-"+customerRetrievalRate);
+        System.out.println("Max capacity"+maxTicketCapacity);
         System.out.println("Number of vendors");
         System.out.println("Number of customers");
     }
