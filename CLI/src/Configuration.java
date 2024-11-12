@@ -45,8 +45,5 @@ public class Configuration {
         System.out.println("Number of vendors");
         System.out.println("Number of customers");
     }
-    
-
-
 
 }
