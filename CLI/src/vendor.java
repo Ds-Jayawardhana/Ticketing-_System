@@ -12,6 +12,16 @@ public class vendor implements Runnable{
 
     @Override
     public void run() {
-
+        int tickeCount=1;
+            try{
+                while (true){
+                    for(int i=0;i<releaseRate;i++){
+                        ticketPool.addTicket("Ticket -"+tickeCount++);
+                    }
+                    Thread.sleep(releaseInterval);
+                }
+            }catch (InterruptedException e){
+                System.out.println("Vendor Interrupted");
+            }
     }
 }

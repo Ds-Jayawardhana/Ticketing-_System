@@ -3,7 +3,7 @@ public class Configuration {
         return ticketReleaseRate;
     }
 
-    public void setTicketReleaseRate(int ticketReleaseRate) {
+    public void setTicketReleaseRate(int i) {
         this.ticketReleaseRate = ticketReleaseRate;
     }
 
@@ -35,6 +35,26 @@ public class Configuration {
     private int ticketReleaseRate;
     private int customerRetrievalRate;
     private int maxTicketCapacity;
+    private int noVendors;
+    private int noCustomers;
+
+    public int getNoVendors() {
+        return noVendors;
+    }
+
+    public void setNoVendors(int noVendors) {
+        this.noVendors = noVendors;
+    }
+
+    public int getNoCustomers() {
+        return noCustomers;
+    }
+
+    public void setNoCustomers(int noCustomers) {
+        this.noCustomers = noCustomers;
+    }
+
+
 
 
     public void displayConfig(){
@@ -42,8 +62,8 @@ public class Configuration {
         System.out.println("Release Rate Per Second:-"+ticketReleaseRate);
         System.out.println("Retrieve Rate per Second:-"+customerRetrievalRate);
         System.out.println("Max capacity"+maxTicketCapacity);
-        System.out.println("Number of vendors");
-        System.out.println("Number of customers");
+        System.out.println("Number of vendors"+noVendors);
+        System.out.println("Number of customers"+noCustomers);
     }
 
 }
