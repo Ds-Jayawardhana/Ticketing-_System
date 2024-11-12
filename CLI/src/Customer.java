@@ -9,7 +9,16 @@ public class Customer implements Runnable {
 
     @Override
     public void run() {
-
+        try {
+            while (true) {
+                ticketpool.removeTicket();
+                Thread.sleep(retreivelInterval);
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Customer Interrupted");
+        }
     }
 }
+
+
 
