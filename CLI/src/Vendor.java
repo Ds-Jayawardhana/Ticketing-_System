@@ -1,27 +1,42 @@
-public class vendor implements Runnable{
+import java.util.logging.Logger;
 
+public class Vendor implements Runnable {
+    private static final Logger logger = Logger.getLogger(Vendor.class.getName());
     private final TicketPool ticketPool;
     private final int releaseRate;
     private final int releaseInterval;
+    private final Configuration config;
+    private final int vendorId;
 
-    public vendor(TicketPool ticketPool, int releaseRate, int releaseInterval) {
+    public Vendor(TicketPool ticketPool, int releaseRate, int releaseInterval, Configuration config, int vendorId) {
         this.ticketPool = ticketPool;
         this.releaseRate = releaseRate;
         this.releaseInterval = releaseInterval;
+        this.config = config;
+        this.vendorId = vendorId;
     }
 
     @Override
     public void run() {
-        int tickeCount=1;
-            try{
-                while (true){
-                    for(int i=0;i<releaseRate;i++){
-                        ticketPool.addTicket("Ticket -"+tickeCount++);
+        int ticketCount = 1;
+        try {
+            while (config.getRemainingTickets() > 0) {
+                int actualReleaseRate = Math.min(releaseRate, config.getRemainingTickets());
+                if (actualReleaseRate > 0) {
+                    for (int i = 0; i < actualReleaseRate; i++) {
+                        ticketPool.addTicket("Ticket-V" + vendorId + "-" + ticketCount++);
                     }
-                    Thread.sleep(releaseInterval);
+                    config.decrementRemainingTickets(actualReleaseRate);
+                    logger.info("Vendor " + vendorId + " released " + actualReleaseRate + " tickets. Remaining total: " + config.getRemainingTickets());
                 }
-            }catch (InterruptedException e){
-                System.out.println("Vendor Interrupted");
+                Thread.sleep(releaseInterval);
             }
+            logger.info("Vendor " + vendorId + " finished - no more tickets to release");
+        } catch (InterruptedException e) {
+            logger.info("Vendor " + vendorId + " Interrupted");
+        }
     }
 }
+
+// Customer.java
+

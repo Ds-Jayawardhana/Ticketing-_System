@@ -1,24 +1,29 @@
-public class Customer implements Runnable {
-    private final TicketPool ticketpool;
-    private final int retreivelInterval;
+import java.util.logging.Logger;
 
-    public Customer(TicketPool ticketpool, int retreivelInterval) {
-        this.ticketpool = ticketpool;
-        this.retreivelInterval = retreivelInterval;
+public class Customer implements Runnable {
+    private static final Logger logger = Logger.getLogger(Customer.class.getName());
+    private final TicketPool ticketPool;
+    private final int retrievalInterval;
+    private final int customerId;
+
+    public Customer(TicketPool ticketPool, int retrievalInterval, int customerId) {
+        this.ticketPool = ticketPool;
+        this.retrievalInterval = retrievalInterval;
+        this.customerId = customerId;
     }
 
     @Override
     public void run() {
         try {
             while (true) {
-                ticketpool.removeTicket();
-                Thread.sleep(retreivelInterval);
+                String ticket = ticketPool.removeTicket();
+                if (ticket != null) {
+                    logger.info("Customer " + customerId + " retrieved ticket: " + ticket);
+                }
+                Thread.sleep(retrievalInterval);
             }
         } catch (InterruptedException e) {
-            System.out.println("Customer Interrupted");
+            logger.info("Customer " + customerId + " Interrupted");
         }
     }
 }
-
-
-
