@@ -38,5 +38,4 @@ public class Vendor implements Runnable {
     }
 }
 
-// Customer.java
 

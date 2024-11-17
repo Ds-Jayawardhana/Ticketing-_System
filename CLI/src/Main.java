@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
     private static final Scanner scanner = new Scanner(System.in);
-    private static Configuration config = new Configuration();
+    private static Configuration config ;
     private static TicketPool ticketPool;
     private static boolean systemRunning = false;
 
