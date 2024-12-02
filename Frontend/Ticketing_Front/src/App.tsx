@@ -1,12 +1,15 @@
-import { ThemeProvider } from "./components/theme-provider"
-import { Button } from "./components/ui/button"
+import { Outlet } from "react-router-dom";
+import { ThemeProvider } from "@/components/theme-provider";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Button>Button</Button>
+      <div>
+        {/* Optional: Add navigation or layout components here */}
+        <Outlet /> {/* This renders the child routes */}
+      </div>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
