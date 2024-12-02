@@ -19,6 +19,7 @@ public class TicketPool {
                 logger.info("Ticket Added: " + ticket);
             } else {
                 logger.warning("Ticket Pool is Full. Cannot add more tickets to the Ticket Pool.");
+                
             }
         }
     }

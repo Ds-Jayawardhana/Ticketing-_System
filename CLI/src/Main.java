@@ -4,10 +4,11 @@ import java.util.logging.Logger;
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
     private static final Scanner scanner = new Scanner(System.in);
-    private static Configuration config ;
+    private static Configuration config =new Configuration();
     private static TicketPool ticketPool;
     private static boolean systemRunning = false;
 
+    
     public static void main(String[] args) {
         System.out.println("-------Welcome To Realtime Ticketing Booking System-------");
         String prn_op = """
