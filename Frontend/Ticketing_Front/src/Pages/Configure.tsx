@@ -1,67 +1,86 @@
-"use client";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-interface Props {}
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
-
-export const ProfileForm = () => {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
-  });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
-
+const EventTicketingSystem = () => {
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label htmlFor="username" className="block text-sm font-medium">
-          Username
-        </label>
-        <input
-          id="username"
-          {...form.register("username")}
-          className="block w-full border rounded p-2"
-        />
-        {form.formState.errors.username && (
-          <p className="text-red-600 text-sm">
-            {form.formState.errors.username.message}
-          </p>
-        )}
-      </div>
-      <Button type="submit" variant="secondary">
-        Submit
-      </Button>
-    </form>
+    <Card className="w-full max-w-md mx-auto">
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">
+          Event Ticketing System Demo
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="totalTickets">Total Tickets</Label>
+            <Input 
+              id="totalTickets"
+              type="number" 
+              placeholder="1000"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="releaseRate">Release Rate (per second)</Label>
+            <Input 
+              id="releaseRate"
+              type="number" 
+              placeholder="5"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="retrievalRate">Retrieval Rate (per second)</Label>
+            <Input 
+              id="retrievalRate"
+              type="number" 
+              placeholder="3"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="maxCapacity">Max Capacity</Label>
+            <Input 
+              id="maxCapacity"
+              type="number" 
+              placeholder="100"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="vendors">Number of Vendors</Label>
+            <Input 
+              id="vendors"
+              type="number" 
+              placeholder="3"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="customers">Number of Customers</Label>
+            <Input 
+              id="customers"
+              type="number" 
+              placeholder="5"
+              className="w-full"
+            />
+          </div>
+
+          <Button className="w-full mt-6" size="lg">
+            CONFIGURE
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
-const Configure = (props: Props) => {
-  return (
-    <div>
-      <Button variant="secondary">This Is Configure</Button>
-      {/* Use the ProfileForm Component */}
-      <ProfileForm />
-    </div>
-  );
-};
-
-export default Configure;
+export default EventTicketingSystem;
