@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 
 const EventTicketingSystem = () => {
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto mt-[50px] mb-[50px]">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">
-          Event Ticketing System Demo
+        <CardTitle className="text-center text-xl font-bold align-middle">
+          CONFIGURE THE PARAMETERS
         </CardTitle>
       </CardHeader>
       <CardContent>

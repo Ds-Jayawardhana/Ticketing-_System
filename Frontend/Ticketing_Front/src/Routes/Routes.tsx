@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
         children: [
             { 
                 path: "", 
-                element: <Home/> // Make sure Home is imported correctly
+                element: <Home/> 
             },
             { 
                 path: "admin", 
