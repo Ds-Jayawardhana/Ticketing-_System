@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
-// Sample data for the line chart
 const chartData = [
   { time: '0s', rate: 4 },
   { time: '1s', rate: 3 },
@@ -158,6 +160,59 @@ const TicketDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Purchase Form Section */}
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Purchase Tickets</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="customerName">Customer Name</Label>
+                <Input 
+                  id="customerName" 
+                  placeholder="Enter customer name"
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber">Phone Number</Label>
+                <Input 
+                  id="phoneNumber" 
+                  placeholder="Enter phone number"
+                  type="tel"
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="address">Address</Label>
+                <Input 
+                  id="address" 
+                  placeholder="Enter address"
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="ticketCount">Number of Tickets</Label>
+                <Input 
+                  id="ticketCount" 
+                  type="number" 
+                  placeholder="Enter number of tickets"
+                  min="1"
+                  className="w-full"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end mt-6">
+              <Button type="submit" className="w-32">
+                Purchase
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
