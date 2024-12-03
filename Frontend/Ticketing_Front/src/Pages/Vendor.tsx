@@ -99,7 +99,7 @@ const TicketDashboard = () => {
         {/* Chart */}
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Retrieval Rate (per second)</CardTitle>
+            <CardTitle>Release Rate (per second)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[200px]">
@@ -123,7 +123,7 @@ const TicketDashboard = () => {
         {/* Logs */}
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Real-time Logs</CardTitle>
+            <CardTitle> Activity Log</CardTitle>
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-[200px] w-full rounded-md border p-4">

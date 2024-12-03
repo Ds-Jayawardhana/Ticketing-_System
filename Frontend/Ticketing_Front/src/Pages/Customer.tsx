@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -95,7 +94,7 @@ const TicketDashboard = () => {
         </Card>
       </div>
 
-      {/* Bottom Section */}
+      {/* Chart and Logs Section */}
       <div className="grid gap-4 md:grid-cols-2">
         {/* Chart */}
         <Card className="col-span-1">
@@ -124,16 +123,14 @@ const TicketDashboard = () => {
         {/* Logs */}
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>Real-time Logs</CardTitle>
+            <CardTitle>Activity Log</CardTitle>
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-[200px] w-full rounded-md border p-4">
               <div className="space-y-4">
-                {/* Log Items */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder-avatar.jpg" />
                       <AvatarFallback>V1</AvatarFallback>
                     </Avatar>
                     <div>
@@ -147,7 +144,6 @@ const TicketDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder-avatar.jpg" />
                       <AvatarFallback>C1</AvatarFallback>
                     </Avatar>
                     <div>
