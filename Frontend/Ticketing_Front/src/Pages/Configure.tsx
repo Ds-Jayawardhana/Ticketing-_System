@@ -3,8 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import {useNavigate} from 'react-router-dom';
 
 const EventTicketingSystem = () => {
+  const navigate=useNavigate();
+
+  const handleConfigureClick=()=>{
+    navigate('/Admin');
+  }
   return (
     <Card className="w-full max-w-md mx-auto mt-[50px] mb-[50px]">
       <CardHeader>
@@ -74,7 +80,9 @@ const EventTicketingSystem = () => {
             />
           </div>
 
-          <Button className="w-full mt-6" size="lg">
+          <Button className="w-full mt-6" size="lg"
+            onClick={handleConfigureClick}
+          >
             CONFIGURE
           </Button>
         </div>
