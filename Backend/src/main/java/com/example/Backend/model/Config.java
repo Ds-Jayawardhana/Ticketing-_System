@@ -1,2 +1,4 @@
-package com.example.Backend.model;public class config {
+package com.example.Backend.model;
+
+public class Config {
 }

@@ -1,2 +1,4 @@
-package com.example.Backend.services;public interface ConfigServices {
+package com.example.Backend.services;
+
+public interface ConfigServices {
 }
