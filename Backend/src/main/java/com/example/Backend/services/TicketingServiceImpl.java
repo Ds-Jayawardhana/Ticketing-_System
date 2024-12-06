@@ -1,4 +1,4 @@
 package com.example.Backend.services;
 
-public class TicketingServiceImpl {
-}
+public class TicketingServiceImpl implements TicketingService {
+}   
