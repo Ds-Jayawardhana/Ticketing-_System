@@ -15,6 +15,12 @@ public class ConfigServiceImpl implements ConfigServices {
     public Config saveConfiguration(Config config) {
         return configRepo.save(config); // Use the instance to save
     }
+
+    @Override
+    public Config getConfig() {
+        return null;
+    }
+
     public Config getConfigs(){
         return configRepo.findFirstByOrderIdDsec()
             .orElse(new Config());
