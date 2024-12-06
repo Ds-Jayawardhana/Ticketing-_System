@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
-import './App.css'
+
+import './App.css' 
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         {/* Optional: Add navigation or layout components here */}
         <Outlet /> {/* This renders the child routes */}
       </div>
+      
     </ThemeProvider>
   );
 }
