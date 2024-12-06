@@ -1,2 +1,4 @@
-package com.example.Backend.Controller;public class TicketingController {
+package com.example.Backend.Controller;
+
+public class TicketingController {
 }

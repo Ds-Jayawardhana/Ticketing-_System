@@ -1,4 +1,4 @@
-package components;
+package com.example.Backend.components;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -21,7 +21,8 @@ public class Ticketpool {
     public void TicketPool(int maxCapacity, int totalTickets) {
         this.maxCapacity = maxCapacity;
         this.totalTickets = totalTickets;
-        
+
+
     }
     
 }

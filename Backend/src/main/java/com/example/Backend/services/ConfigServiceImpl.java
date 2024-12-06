@@ -17,7 +17,7 @@ public class ConfigServiceImpl implements ConfigServices {
     }
     public Config getConfigs(){
         return configRepo.findFirstByOrderIdDsec()
-            .orElse(new Config())
+            .orElse(new Config());
     }
 }
 
