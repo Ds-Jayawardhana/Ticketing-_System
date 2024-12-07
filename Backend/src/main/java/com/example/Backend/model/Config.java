@@ -76,7 +76,6 @@ public class Config {
     private int noCustomers;
 
 
-    public Config(){
 
-    }
+
 }

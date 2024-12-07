@@ -1,9 +1,29 @@
 package com.example.Backend.services;
 
-import com.example.Backend.components.Customer;
+import java.util.Scanner;
+import java.util.logging.Logger;
 
+import com.example.Backend.components.Ticketpool;
+import com.example.Backend.model.Config;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.Backend.components.Customer;
+@Service
 public class TicketingServiceImpl implements TicketingService {
-    public static void userStart() {
+        private static final Logger logger = Logger.getLogger(TicketingServiceImpl.class.getName());
+        private static final Scanner scanner = new Scanner(System.in);
+        private static boolean systemRunning=true;
+
+        @Autowired
+        private static ConfigServiceImpl configServiceImpl;
+
+        @Autowired
+        private Ticketpool ticketpool;
+
+        private static Config config;
+
+    public void userStart() {
         if (systemRunning) {
             logger.info("System is already running.");
             return;
@@ -14,14 +34,13 @@ public class TicketingServiceImpl implements TicketingService {
             return;
         }
 
-        // Reset remaining tickets to total tickets
-        config.setRemainingTickets(config.getTotalTickets());
+        configServiceImpl.setRemainingTickets(config.getTotalTickets());
 
-        // Create ticket pool
-        ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets());
+       
+        ticketpool = new Ticketpool(config.getMaxCap(), config.getTotalTickets());
 
         // Calculate vendor release rate
-        int ratePerVendor = Math.max(1, config.getTicketReleaseRate() / config.getNoVendors());
+        int ratePerVendor = Math.max(1, config.getReleaseRate() / config.getNoVendors());
 
         // Prepare thread arrays
         vendorThreads = new Thread[config.getNoVendors()];
@@ -30,7 +49,7 @@ public class TicketingServiceImpl implements TicketingService {
         // Start vendor threads
         for (int i = 0; i < config.getNoVendors(); i++) {
             vendorThreads[i] = new Thread(new Vendor(
-                    ticketPool,
+                    ticketpool,
                     ratePerVendor,
                     1000,
                     config,
@@ -42,8 +61,8 @@ public class TicketingServiceImpl implements TicketingService {
         // Start customer threads
         for (int i = 0; i < config.getNoCustomers(); i++) {
             customerThreads[i] = new Thread(new Customer(
-                    ticketPool,
-                    1000 / config.getCustomerRetrievalRate(),
+                    ticketpool,
+                    1000 / config.getRetrievalRate(),
                     i + 1
             ));
             customerThreads[i].start();
@@ -60,8 +79,8 @@ public class TicketingServiceImpl implements TicketingService {
             return false;
         }
 
-        if (config.getMaxTicketCapacity() <= 0 ||
-                config.getMaxTicketCapacity() > config.getTotalTickets()) {
+        if (config.getMaxCap()<= 0 ||
+                config.getMaxCap() > config.getTotalTickets()) {
             System.out.println("Invalid max ticket capacity. Must be between 1 and total tickets.");
             return false;
         }
@@ -69,7 +88,7 @@ public class TicketingServiceImpl implements TicketingService {
         return true;
     }
 
-    public static void configureSystem() {
+    public void configureSystem() {
         try {
             logger.info("Configuring the system...");
             System.out.println("Please enter the following system Configuration values");
@@ -94,7 +113,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Release rate must be greater than 0. Try again.");
                 }
             } while (releaseRate <= 0);
-            config.setTicketReleaseRate(releaseRate);
+            configServiceImpl.setTicketReleaseRate(releaseRate);
 
             // Validate retrieval rate
             System.out.println("Enter the retrieve rate per Second (must be > 0)");
@@ -105,7 +124,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Retrieval rate must be greater than 0. Try again.");
                 }
             } while (retrievalRate <= 0);
-            config.setCustomerRetrievalRate(retrievalRate);
+            configServiceImpl.setCustomerRetrievalRate(retrievalRate);
 
             // Validate max ticket capacity
             System.out.println("Enter the Max Ticket Capacity (must be less than " + totalTickets + ")");
@@ -116,7 +135,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Invalid max capacity. Must be between 1 and " + totalTickets);
                 }
             } while (maxCapacity <= 0 || maxCapacity > totalTickets);
-            config.setMaxTicketCapacity(maxCapacity);
+            configServiceImpl.setMaxTicketCapacity(maxCapacity);
 
             // Validate number of vendors
             System.out.println("Enter the Number of Vendors (must be > 0)");
@@ -127,7 +146,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Number of vendors must be greater than 0. Try again.");
                 }
             } while (vendors <= 0);
-            config.setNoVendors(vendors);
+            configServiceImpl.setNoVendors(vendors);
 
             // Validate number of customers
             System.out.println("Enter the Number of Customers (must be > 0)");
@@ -138,10 +157,10 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Number of customers must be greater than 0. Try again.");
                 }
             } while (customers <= 0);
-            config.setNoCustomers(customers);
+            configServiceImpl.setNoCustomers(customers);
 
             // Save the configuration
-            config.saveConfig();
+            configServiceImpl.saveConfig();
             System.out.println("System configuration updated successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter valid numeric values.");
@@ -152,7 +171,7 @@ public class TicketingServiceImpl implements TicketingService {
         config.displayConfig();
     }
 
-    public static void stopSystem() {
+    public void stopSystem() {
         if (!systemRunning) {
             System.out.println("System is not running.");
             return;

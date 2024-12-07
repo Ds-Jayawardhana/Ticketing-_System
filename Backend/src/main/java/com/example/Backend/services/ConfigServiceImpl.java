@@ -9,21 +9,17 @@ import org.springframework.stereotype.Service;
 public class ConfigServiceImpl implements ConfigServices {
 
     @Autowired
-    private ConfigRepo configRepo; // Inject ConfigRepo instance
+    private ConfigRepo configRepo;
 
     @Override
     public Config saveConfiguration(Config config) {
-        return configRepo.save(config); // Use the instance to save
+        return configRepo.save(config);
     }
 
     @Override
     public Config getConfig() {
-        return null;
-    }
-
-    public Config getConfigs(){
         return configRepo.findFirstByOrderIdDsec()
-            .orElse(new Config());
+                .orElse(new Config());
     }
 }
 
