@@ -1,20 +1,33 @@
-package com.example.Backend.components;
+/*package com.example.Backend.components;
 
 import java.lang.module.Configuration;
 import java.util.logging.Logger;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
+
 public class Vendor implements Runnable {
     private static final Logger logger = Logger.getLogger(Vendor.class.getName());
 
+    @Autowired
     private Ticketpool ticketPool;
     private final int releaseRate;
     private Configuration config;
     private final int vendorId;
+    private int noVendors;
+
+    public Vendor(Ticketpool ticketpool, int releaseRate, int noVendors, int vendorId) {
+            this.ticketPool = ticketpool;
+            this.releaseRate = releaseRate;
+            this.noVendors=noVendors;
+            this.vendorId = vendorId;
+
+    }
 
 
     @Override
@@ -38,4 +51,4 @@ public class Vendor implements Runnable {
             logger.info("Vendor " + vendorId + " Interrupted");
         }
     }
-}
+}*/

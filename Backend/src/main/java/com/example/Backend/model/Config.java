@@ -6,11 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+
 @Entity
+
+
 public class Config {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     public int getTotalTickets() {
         return totalTickets;
@@ -60,7 +63,7 @@ public class Config {
         this.maxCap = maxCap;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

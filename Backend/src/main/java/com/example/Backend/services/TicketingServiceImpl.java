@@ -1,9 +1,10 @@
-package com.example.Backend.services;
+/*package com.example.Backend.services;
 
 import java.util.Scanner;
 import java.util.logging.Logger;
 
 import com.example.Backend.components.Ticketpool;
+import com.example.Backend.components.Vendor;
 import com.example.Backend.model.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ public class TicketingServiceImpl implements TicketingService {
         private static final Logger logger = Logger.getLogger(TicketingServiceImpl.class.getName());
         private static final Scanner scanner = new Scanner(System.in);
         private static boolean systemRunning=true;
+        private static Thread[] vendorThreads;
+        private static Thread[] customerThreads;
 
         @Autowired
         private static ConfigServiceImpl configServiceImpl;
@@ -37,7 +40,7 @@ public class TicketingServiceImpl implements TicketingService {
 
         configServiceImpl.setRemainingTickets(config.getTotalTickets());
 
-       
+
         ticketpool = new Ticketpool(config.getMaxCap(), config.getTotalTickets());
 
         // Calculate vendor release rate
@@ -49,25 +52,15 @@ public class TicketingServiceImpl implements TicketingService {
 
         // Start vendor threads
         for (int i = 0; i < config.getNoVendors(); i++) {
-            vendorThreads[i] = new Thread(new Vendor(
-                    ticketpool,
-                    ratePerVendor,
-                    1000,
-                    config,
-                    i + 1
-            ));
+            vendorThreads[i] = new Thread(new Vendor(ticketpool, ratePerVendor, config.getNoVendors(), i + 1));
             vendorThreads[i].start();
         }
-
         // Start customer threads
         for (int i = 0; i < config.getNoCustomers(); i++) {
-            customerThreads[i] = new Thread(new Customer(
-                    ticketpool,
-                    1000 / config.getRetrievalRate(),
-                    i + 1
-            ));
+            customerThreads[i] = new Thread(new Customer(ticketpool, 1000 / config.getRetrievalRate(), i + 1));
             customerThreads[i].start();
         }
+
 
         // Mark system as running
         systemRunning = true;
@@ -195,11 +188,11 @@ public class TicketingServiceImpl implements TicketingService {
 
 
         systemRunning = false;
-        ticketPool = null;
+        ticketpool = null;
         vendorThreads = null;
         customerThreads = null;
 
         System.out.println("System stopped successfully.");
         logger.info("System stopped.");
     }
-}   
+}   */

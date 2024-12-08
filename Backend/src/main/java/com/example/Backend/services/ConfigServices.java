@@ -4,10 +4,6 @@ import com.example.Backend.model.Config;
 public interface ConfigServices {
     public Config saveConfiguration(Config config);
 
-    public Config getConfig();
-
-
-
 
     void setRemainingTickets(int totalTickets);
 

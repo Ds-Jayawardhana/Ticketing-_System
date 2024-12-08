@@ -13,13 +13,13 @@ public class ConfigServiceImpl implements ConfigServices {
 
     @Override
     public Config saveConfiguration(Config config) {
+        
         return configRepo.save(config);
     }
 
     @Override
-    public Config getConfig() {
-        return configRepo.findFirstByOrderIdDsec()
-                .orElse(new Config());
+    public void setRemainingTickets(int totalTickets) {
+
     }
 
 }

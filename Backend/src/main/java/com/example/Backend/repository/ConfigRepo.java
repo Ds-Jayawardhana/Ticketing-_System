@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface ConfigRepo extends JpaRepository<Config, Integer> {
 
 
-    Optional<Config> findFirstByOrderIdDsec();
-    Optional<Config>  findByTotalTickets(Integer integer);
+   /* Optional<Config> findFirstByOrderIdDsec();
+    Optional<Config>  findByTotalTickets(Integer integer);*/
 
    
 

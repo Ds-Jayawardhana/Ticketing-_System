@@ -1,6 +1,7 @@
-package com.example.Backend.components;
+/*package com.example.Backend.components;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,18 +9,18 @@ import java.util.logging.Logger;
 
 
 @Component
+@AllArgsConstructor
+
 
 public class Customer implements Runnable {
     private static final Logger logger = Logger.getLogger(Customer.class.getName());
     private final Ticketpool ticketPool;
+
+
+
     @Autowired
-    private final int customerId;
+    private int customerId;
 
-
-    public Customer(Ticketpool ticketPool, int customerId) {
-        this.ticketPool = ticketPool;
-        this.customerId = customerId;
-    }
 
     @Override
     public void run() {
@@ -35,6 +36,6 @@ public class Customer implements Runnable {
             logger.info("Customer " + customerId + " Interrupted");
         }
     }
-}
+}*/
 
 

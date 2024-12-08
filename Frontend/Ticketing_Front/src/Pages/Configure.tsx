@@ -3,11 +3,30 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import {useNavigate} from 'react-router-dom';
+import { useState } from 'react';
+
 
 const EventTicketingSystem = () => {
   const navigate=useNavigate();
+  const [totalTickets, settotalTickets] = useState('');
+  const [releaseRate, setreleaseRate] = useState('');
+  const [retrievalRate, SetretrievalRate] = useState('');
+  const [maxCap, setmaxCap] = useState('');
+  const [noVendors, setnoVendors] = useState('');
+  const [noCustomers,setnoCustomers] = useState('');
 
-  const handleConfigureClick=()=>{
+  const handleConfigureClick=(e)=>{
+    e.preventDefault()
+    const configure={totalTickets,releaseRate,retrievalRate,maxCap,noVendors,noCustomers}
+    console.log(configure)
+    fetch("http://localhost:8080/configure/add",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(configure)
+
+
+    })
+
     navigate('/Admin');
   }
   return (
@@ -26,6 +45,8 @@ const EventTicketingSystem = () => {
               type="number" 
               placeholder="1000"
               className="w-full"
+              value={totalTickets}
+              onChange={(e)=>settotalTickets(e.target.value)}
             />
           </div>
 
@@ -36,6 +57,8 @@ const EventTicketingSystem = () => {
               type="number" 
               placeholder="5"
               className="w-full"
+              value={releaseRate}
+              onChange={(e)=>setreleaseRate(e.target.value)}
             />
           </div>
 
@@ -46,6 +69,8 @@ const EventTicketingSystem = () => {
               type="number" 
               placeholder="3"
               className="w-full"
+              value={retrievalRate}
+              onChange={(e)=>SetretrievalRate(e.target.value)}
             />
           </div>
 
@@ -56,6 +81,8 @@ const EventTicketingSystem = () => {
               type="number" 
               placeholder="100"
               className="w-full"
+              value={maxCap}
+              onChange={(e)=>setmaxCap(e.target.value)}
             />
           </div>
 
@@ -66,6 +93,8 @@ const EventTicketingSystem = () => {
               type="number" 
               placeholder="3"
               className="w-full"
+              value={noVendors}
+              onChange={(e)=>setnoVendors(e.target.value)}
             />
           </div>
 
@@ -76,6 +105,8 @@ const EventTicketingSystem = () => {
               type="number" 
               placeholder="5"
               className="w-full"
+              value={noCustomers}
+              onChange={(e)=>setnoCustomers(e.target.value)}
             />
           </div>
 
