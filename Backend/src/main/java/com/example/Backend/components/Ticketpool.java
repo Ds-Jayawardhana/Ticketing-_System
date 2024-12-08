@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
+
 import org.springframework.stereotype.Component;
-import lombok.Getter;
+
+import lombok.Data;
 
 
 @Component
-@Getter
+@Data
 
 public class Ticketpool {
     private final List<String> tickets = Collections.synchronizedList(new LinkedList<>());
@@ -20,7 +22,7 @@ public class Ticketpool {
     private int totalSoldTickets = 0;
     private  int totalTickets;
 
-    public void TicketPool(int maxCapacity, int totalTickets) {
+    public void Ticketpool(int maxCapacity, int totalTickets) {
         this.maxCapacity = maxCapacity;
         this.totalTickets = totalTickets;
 

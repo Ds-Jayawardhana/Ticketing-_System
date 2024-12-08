@@ -1,6 +1,7 @@
 package com.example.Backend.components;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;
@@ -11,8 +12,7 @@ import java.util.logging.Logger;
 public class Customer implements Runnable {
     private static final Logger logger = Logger.getLogger(Customer.class.getName());
     private final Ticketpool ticketPool;
-
-    private final int retrievalInterval;
+    @Autowired
     private final int customerId;
 
 
