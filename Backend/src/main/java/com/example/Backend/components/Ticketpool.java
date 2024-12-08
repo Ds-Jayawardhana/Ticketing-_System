@@ -1,4 +1,4 @@
-/*package com.example.Backend.components;
+package com.example.Backend.components;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -6,33 +6,33 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
-import lombok.RequiredArgsConstructor;
+import com.example.Backend.model.Config;
+import com.example.Backend.services.ConfigServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import lombok.Data;
 
 
 @Component
-@Data
-@RequiredArgsConstructor
-
 public class Ticketpool {
     private final List<String> tickets = Collections.synchronizedList(new LinkedList<>());
     private static final Logger logger = Logger.getLogger(Ticketpool.class.getName());
-    private int maxCapacity;
+    private int maxCap;
     private volatile boolean isSystemRunning = true;
     private int totalSoldTickets = 0;
-    private  int totalTickets;
+    private int totalTickets;
+    @Autowired
+    private ConfigServiceImpl configService;
 
-    public Ticketpool(int maxCap, int totalTickets) {
-        this.maxCapacity = maxCapacity;
+    public void init(int maxCap, int totalTickets) {
+        this.maxCap = maxCap;
         this.totalTickets = totalTickets;
 
     }
+
     public void addTicket(String ticket) {
         synchronized(this.tickets) {
             if (this.isSystemRunning) {
-                if (this.tickets.size() < this.maxCapacity) {
+                if (this.tickets.size() < this.maxCap) {
                     this.tickets.add(ticket);
                     logger.info("Ticket Added: " + ticket);
                 } else {
@@ -48,7 +48,7 @@ public class Ticketpool {
             if (!this.isSystemRunning) {
                 return null;
             } else if (!this.tickets.isEmpty()) {
-                String ticket = (String)this.tickets.removeFirst();
+                String ticket = (String)this.tickets.remove(0);
                 ++this.totalSoldTickets;
                 logger.info("Ticket Removed: " + ticket);
                 if (this.totalSoldTickets >= this.totalTickets) {
@@ -83,6 +83,4 @@ public class Ticketpool {
         }
     }
 
-
 }
-*/

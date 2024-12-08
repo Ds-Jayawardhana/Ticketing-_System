@@ -1,4 +1,4 @@
-/*package com.example.Backend.model;
+package com.example.Backend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,4 +40,3 @@ public class Status {
     }
 
 }
-*/
