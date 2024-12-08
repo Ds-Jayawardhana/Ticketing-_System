@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
@@ -13,6 +14,7 @@ import lombok.Data;
 
 @Component
 @Data
+@RequiredArgsConstructor
 
 public class Ticketpool {
     private final List<String> tickets = Collections.synchronizedList(new LinkedList<>());
@@ -22,10 +24,9 @@ public class Ticketpool {
     private int totalSoldTickets = 0;
     private  int totalTickets;
 
-    public void Ticketpool(int maxCapacity, int totalTickets) {
+    public Ticketpool(int maxCap, int totalTickets) {
         this.maxCapacity = maxCapacity;
         this.totalTickets = totalTickets;
-
 
     }
     public void addTicket(String ticket) {

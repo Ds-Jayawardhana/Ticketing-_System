@@ -3,9 +3,11 @@ package com.example.Backend.components;
 import java.lang.module.Configuration;
 import java.util.logging.Logger;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class Vendor implements Runnable {
     private static final Logger logger = Logger.getLogger(Vendor.class.getName());
 
@@ -14,13 +16,6 @@ public class Vendor implements Runnable {
     private Configuration config;
     private final int vendorId;
 
-
-    public Vendor(Ticketpool ticketPool, int releaseRate, Configuration config, int vendorId) {
-        this.ticketPool = ticketPool;
-        this.releaseRate = releaseRate;
-        this.config = config;
-        this.vendorId = vendorId;
-    }
 
     @Override
     public void run() {

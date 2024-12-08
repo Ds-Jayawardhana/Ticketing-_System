@@ -16,9 +16,8 @@ public class Customer implements Runnable {
     private final int customerId;
 
 
-    public Customer(Ticketpool ticketPool, int retrievalInterval, int customerId) {
+    public Customer(Ticketpool ticketPool, int customerId) {
         this.ticketPool = ticketPool;
-        this.retrievalInterval = retrievalInterval;
         this.customerId = customerId;
     }
 
@@ -30,7 +29,7 @@ public class Customer implements Runnable {
                 if (ticket != null) {
                     logger.info("Customer " + customerId + " retrieved ticket: " + ticket);
                 }
-                Thread.sleep(retrievalInterval);
+                Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             logger.info("Customer " + customerId + " Interrupted");

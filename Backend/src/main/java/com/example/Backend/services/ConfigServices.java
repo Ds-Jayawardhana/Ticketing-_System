@@ -7,7 +7,9 @@ public interface ConfigServices {
     public Config getConfig();
 
 
+
+
     void setRemainingTickets(int totalTickets);
 
-    Object getMaxTicketCapacity();
+
 }

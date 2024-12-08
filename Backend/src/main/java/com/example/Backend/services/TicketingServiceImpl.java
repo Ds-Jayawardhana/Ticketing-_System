@@ -21,6 +21,7 @@ public class TicketingServiceImpl implements TicketingService {
         @Autowired
         private Ticketpool ticketpool;
 
+        @Autowired
         private static Config config;
 
     public void userStart() {
@@ -113,7 +114,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Release rate must be greater than 0. Try again.");
                 }
             } while (releaseRate <= 0);
-            configServiceImpl.setTicketReleaseRate(releaseRate);
+            config.setReleaseRate(releaseRate);
 
             // Validate retrieval rate
             System.out.println("Enter the retrieve rate per Second (must be > 0)");
@@ -124,7 +125,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Retrieval rate must be greater than 0. Try again.");
                 }
             } while (retrievalRate <= 0);
-            configServiceImpl.setCustomerRetrievalRate(retrievalRate);
+            config.setRetrievalRate(retrievalRate);
 
             // Validate max ticket capacity
             System.out.println("Enter the Max Ticket Capacity (must be less than " + totalTickets + ")");
@@ -135,7 +136,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Invalid max capacity. Must be between 1 and " + totalTickets);
                 }
             } while (maxCapacity <= 0 || maxCapacity > totalTickets);
-            configServiceImpl.setMaxTicketCapacity(maxCapacity);
+            config.setMaxCap(maxCapacity);
 
             // Validate number of vendors
             System.out.println("Enter the Number of Vendors (must be > 0)");
@@ -146,7 +147,7 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Number of vendors must be greater than 0. Try again.");
                 }
             } while (vendors <= 0);
-            configServiceImpl.setNoVendors(vendors);
+            config.setNoVendors(vendors);
 
             // Validate number of customers
             System.out.println("Enter the Number of Customers (must be > 0)");
@@ -157,19 +158,16 @@ public class TicketingServiceImpl implements TicketingService {
                     System.out.println("Number of customers must be greater than 0. Try again.");
                 }
             } while (customers <= 0);
-            configServiceImpl.setNoCustomers(customers);
+            config.setNoCustomers(customers);
 
             // Save the configuration
-            configServiceImpl.saveConfig();
+            configServiceImpl.saveConfiguration(config);
             System.out.println("System configuration updated successfully.");
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter valid numeric values.");
         }
     }
 
-    public static void displayConfiguration() {
-        config.displayConfig();
-    }
 
     public void stopSystem() {
         if (!systemRunning) {
