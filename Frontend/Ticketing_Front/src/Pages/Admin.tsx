@@ -4,8 +4,9 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } f
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Play, Square } from 'lucide-react';
+import { useState,useEffect } from 'react';
 
-// Sample data for the chart
+
 const chartData = [
   { time: '0s', customerRate: 4, vendorRate: 5 },
   { time: '1s', customerRate: 3, vendorRate: 4 },
@@ -16,6 +17,16 @@ const chartData = [
 ];
 
 const AdminDashboard = () => {
+
+  const [totalTicket,setTotalTicket]=useState('0');
+  useEffect(() => {
+    fetch('http://localhost:8080/configure/totTickets')
+      .then(response => response.text())
+      .then(data => {
+        setTotalTicket(Number(data).toLocaleString());
+      })
+      .catch(error => console.error('Error fetching total tickets:', error)); // Optional error handling
+  }, []);
   return (
     <div className="p-6 space-y-6 bg-background">
       {/* Top Row - Metric Cards */}
@@ -39,7 +50,7 @@ const AdminDashboard = () => {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,000</div>
+            <div className="text-2xl font-bold">{totalTicket}</div>
             <p className="text-xs text-muted-foreground">
               Initial pool size
             </p>

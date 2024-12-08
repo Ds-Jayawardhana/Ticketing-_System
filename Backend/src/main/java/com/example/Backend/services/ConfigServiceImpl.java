@@ -21,6 +21,10 @@ public class ConfigServiceImpl implements ConfigServices {
     public void setRemainingTickets(int totalTickets) {
 
     }
+    @Override
+    public Config getLatestConfig(){
+        return configRepo.findTopByOrderByIdDesc();
+    }
 
 }
 

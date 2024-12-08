@@ -8,4 +8,5 @@ public interface ConfigServices {
     void setRemainingTickets(int totalTickets);
 
 
+    public Config getLatestConfig();
 }

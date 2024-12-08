@@ -9,10 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ConfigRepo extends JpaRepository<Config, Integer> {
-
-
-   /* Optional<Config> findFirstByOrderIdDsec();
-    Optional<Config>  findByTotalTickets(Integer integer);*/
+    Config findTopByOrderByIdDesc();
 
    
 
