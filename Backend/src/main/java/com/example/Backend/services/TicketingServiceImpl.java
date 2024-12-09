@@ -36,22 +36,21 @@ public class TicketingServiceImpl implements TicketingService {
 
         configService.setRemainingTickets(currentConfig.getTotalTickets());
 
-        // Create new Ticketpool with user-specified values
+
         ticketpool.init(currentConfig.getMaxCap(), currentConfig.getTotalTickets());
 
-        // Calculate vendor release rate
+
         int ratePerVendor = Math.max(1, currentConfig.getReleaseRate() / currentConfig.getNoVendors());
 
         vendorThreads = new Thread[currentConfig.getNoVendors()];
         customerThreads = new Thread[currentConfig.getNoCustomers()];
 
-        // Start vendor threads
+
         for (int i = 0; i < currentConfig.getNoVendors(); i++) {
             vendorThreads[i] = new Thread(new Vendor(ticketpool, ratePerVendor, i + 1, configService));
             vendorThreads[i].start();
         }
 
-        // Start customer threads
         for (int i = 0; i < currentConfig.getNoCustomers(); i++) {
             customerThreads[i] = new Thread(new Customer(ticketpool, 1000 / currentConfig.getRetrievalRate(), i + 1));
             customerThreads[i].start();

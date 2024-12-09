@@ -2,8 +2,6 @@ package com.example.Backend.services;
 
 import com.example.Backend.model.Config;
 import com.example.Backend.repository.ConfigRepo;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

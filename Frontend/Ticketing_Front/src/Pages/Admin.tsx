@@ -27,6 +27,36 @@ const AdminDashboard = () => {
       })
       .catch(error => console.error('Error fetching total tickets:', error)); // Optional error handling
   }, []);
+  const handleStartBtn = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/ticketing/start', {
+        method: 'POST',
+      });
+  
+      if (response.ok) {
+        console.log('Ticketing system started successfully');
+      } else {
+        console.error('Error starting the ticketing system:', response.status);
+      }
+    } catch (error) {
+      console.error('Error starting the ticketing system:', error);
+    }
+  };
+  const handleStopBtn = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/ticketing/stop', {
+        method: 'POST',
+      });
+  
+      if (response.ok) {
+        console.log('Ticketing system stopped successfully');
+      } else {
+        console.error('Error stoping the ticketing system:', response.status);
+      }
+    } catch (error) {
+      console.error('Error stoping the ticketing system:', error);
+    }
+  };
   return (
     <div className="p-6 space-y-6 bg-background">
       {/* Top Row - Metric Cards */}
@@ -183,10 +213,10 @@ const AdminDashboard = () => {
 
       {/* Bottom Row - Control Buttons */}
       <div className="flex justify-center gap-4">
-        <Button size="lg" className="w-32 h-12 bg-[#22c55e] hover:bg-[#15803d]" variant="default">
+        <Button size="lg" className="w-32 h-12 bg-[#22c55e] hover:bg-[#15803d]" variant="default" onClick={handleStartBtn}>
           <Play className="mr-2 h-5 w-5" /> Start
         </Button>
-        <Button size="lg" className="w-32 h-12" variant="destructive">
+        <Button size="lg" className="w-32 h-12" variant="destructive" onClick={handleStopBtn}>
           <Square className="mr-2 h-5 w-5" /> Stop
         </Button>
       </div>
