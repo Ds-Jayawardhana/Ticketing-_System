@@ -5,7 +5,6 @@ import com.example.Backend.model.TicketStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,14 +25,16 @@ public class TicketWebHandler extends TextWebSocketHandler {
     }
 
     public void broadcastTicketStatus(TicketStatus status) {
-        broadcast(new WebSocketMessage("TICKET_STATUS", status));
+        com.example.Backend.model.WebSocketMessage message = new com.example.Backend.model.WebSocketMessage("TICKET_STATUS", status);
+        broadcast(message);
     }
 
     public void broadcastActivity(ActivityLog activity) {
-        broadcast(new WebSocketMessage("ACTIVITY", activity));
+        com.example.Backend.model.WebSocketMessage message = new com.example.Backend.model.WebSocketMessage("ACTIVITY", activity);
+        broadcast(message);
     }
 
-    private void broadcast(WebSocketMessage message) {
+    private void broadcast(com.example.Backend.model.WebSocketMessage message) {
         String payload;
         try {
             payload = objectMapper.writeValueAsString(message);
@@ -48,4 +49,20 @@ public class TicketWebHandler extends TextWebSocketHandler {
             e.printStackTrace();
         }
     }
+
+    /*private void broadcast(WebSocketMessage message) {
+        String payload;
+        try {
+            payload = objectMapper.writeValueAsString(message);
+            TextMessage textMessage = new TextMessage(payload);
+
+            for (WebSocketSession session : sessions.values()) {
+                if (session.isOpen()) {
+                    session.sendMessage(textMessage);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
 }

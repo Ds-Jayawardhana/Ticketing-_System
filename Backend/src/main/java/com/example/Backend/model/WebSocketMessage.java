@@ -1,6 +1,6 @@
 package com.example.Backend.model;
 
-public class WebSocketMessage {
+public class WebSocketMessage  {
     private String type;
     private Object payload;
 
@@ -9,9 +9,19 @@ public class WebSocketMessage {
         this.payload = payload;
     }
 
+    public String getType() {
+        return type;
+    }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-    public Object getPayload() { return payload; }
-    public void setPayload(Object payload) { this.payload = payload; }
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Object getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Object payload) {
+        this.payload = payload;
+    }
 }

@@ -49,7 +49,7 @@ public class Ticketpool {
 
                     ActivityLog activity = new ActivityLog(
                             "Vendor",
-                            vendorId,
+                            0,
                             "Released ticket: " + ticket
                     );
                     messagingTemplate.convertAndSend("/topic/activity", activity);
@@ -79,7 +79,7 @@ public class Ticketpool {
 
                 ActivityLog activity = new ActivityLog(
                         "Customer",
-                        customerId,
+                        0,
                         "Purchased ticket: " + ticket
                 );
                 messagingTemplate.convertAndSend("/topic/activity", activity);
