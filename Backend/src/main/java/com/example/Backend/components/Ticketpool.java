@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
-import com.example.Backend.model.Config;
+import com.example.Backend.model.ActivityLog;
+
+import com.example.Backend.model.TicketStatus;
 import com.example.Backend.services.ConfigServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 
@@ -20,8 +23,10 @@ public class Ticketpool {
     private volatile boolean isSystemRunning = true;
     private int totalSoldTickets = 0;
     private int totalTickets;
+
     @Autowired
     private ConfigServiceImpl configService;
+    private SimpMessagingTemplate messagingTemplate;
 
     public void init(int maxCap, int totalTickets) {
         this.maxCap = maxCap;
@@ -35,6 +40,20 @@ public class Ticketpool {
                 if (this.tickets.size() < this.maxCap) {
                     this.tickets.add(ticket);
                     logger.info("Ticket Added: " + ticket);
+                    TicketStatus status = new TicketStatus(
+                            totalTickets,
+                            tickets.size(),
+                            totalSoldTickets
+                    );
+                    messagingTemplate.convertAndSend("/topic/ticket-status", status);
+
+                    ActivityLog activity = new ActivityLog(
+                            "Vendor",
+                            vendorId,
+                            "Released ticket: " + ticket
+                    );
+                    messagingTemplate.convertAndSend("/topic/activity", activity);
+
                 } else {
                     logger.warning("Ticket Pool is Full. Cannot add more tickets to the Ticket Pool.");
                 }
@@ -51,6 +70,19 @@ public class Ticketpool {
                 String ticket = (String)this.tickets.remove(0);
                 ++this.totalSoldTickets;
                 logger.info("Ticket Removed: " + ticket);
+                TicketStatus status = new TicketStatus(
+                        totalTickets,
+                        tickets.size(),
+                        totalSoldTickets
+                );
+                messagingTemplate.convertAndSend("/topic/ticket-status", status);
+
+                ActivityLog activity = new ActivityLog(
+                        "Customer",
+                        customerId,
+                        "Purchased ticket: " + ticket
+                );
+                messagingTemplate.convertAndSend("/topic/activity", activity);
                 if (this.totalSoldTickets >= this.totalTickets) {
                     logger.info("All tickets have been sold. System will now stop.");
                     this.isSystemRunning = false;

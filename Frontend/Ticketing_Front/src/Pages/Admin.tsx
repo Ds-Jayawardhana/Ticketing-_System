@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Play, Square } from 'lucide-react';
+import { Play, Square} from 'lucide-react';
 import { useState,useEffect } from 'react';
 
 
@@ -27,6 +27,9 @@ const AdminDashboard = () => {
       })
       .catch(error => console.error('Error fetching total tickets:', error)); // Optional error handling
   }, []);
+
+
+
   const handleStartBtn = async () => {
     try {
       const response = await fetch('http://localhost:8080/ticketing/start', {
@@ -34,12 +37,13 @@ const AdminDashboard = () => {
       });
   
       if (response.ok) {
-        console.log('Ticketing system started successfully');
+        alert("System Started Successfully")
+        
       } else {
-        console.error('Error starting the ticketing system:', response.status);
+        alert(`Error starting the ticketing system: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error starting the ticketing system:', error);
+      alert(`Error starting the ticketing system: {error}`);
     }
   };
   const handleStopBtn = async () => {
@@ -49,12 +53,12 @@ const AdminDashboard = () => {
       });
   
       if (response.ok) {
-        console.log('Ticketing system stopped successfully');
+        alert('System stopped Successfuly')
       } else {
-        console.error('Error stoping the ticketing system:', response.status);
+        alert(`Error stoping the ticketing system:$ {response.status}`)
       }
     } catch (error) {
-      console.error('Error stoping the ticketing system:', error);
+      alert(`Error stoping the ticketing system:$ {error}`);
     }
   };
   return (

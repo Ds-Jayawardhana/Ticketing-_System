@@ -4,7 +4,6 @@ package com.example.Backend.components;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import java.util.logging.Logger;
 
 

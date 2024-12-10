@@ -21,7 +21,7 @@ public class ConfigController {
     }
     @GetMapping("/totTickets")
     public int getStatus() {
-        Config config = configService.getLatestConfig(); // Assuming you have a method to fetch the latest config
+        Config config = configService.getLatestConfig();
         if (config != null) {
             return config.getTotalTickets();
         } else {
