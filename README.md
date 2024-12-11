@@ -1,3 +1,5 @@
+Certainly! Here's an updated README.md file that includes the project structure:
+
 # Real-time Event Ticketing System
 
 A modern event ticketing platform built with React and Spring Boot, featuring real-time updates using WebSocket technology. This system provides seamless ticket booking experiences with instant seat availability updates and booking confirmations.
@@ -106,6 +108,59 @@ npm start
 
 ## 🚦 API Documentation
 
+Refer to the [API Documentation section](#-api-documentation) for details on the available API endpoints and WebSocket communication.
+
+## 🏗️ Project Structure
+
+The project is structured as follows:
+
+```
+realtime-event-ticketing/
+├── backend/
+│   ├── java/
+│   │   └── com/
+│   │       └── example/
+│   │           └── ticketing/
+│   │               ├── config/
+│   │               ├── controller/
+│   │               ├── model/
+│   │               ├── repository/
+│   │               ├── service/
+│   │               └── websocket/
+│   └── resources/
+│       └── application.properties
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   ├── App.tsx
+│   │   └── index.tsx
+│   ├── .env
+│   ├── package.json
+│   └── tsconfig.json
+├── LICENSE.md
+└── README.md
+```
+
+The backend project is structured using the standard Spring Boot project layout, with the main Java code located in the `com.example.ticketing` package. The frontend project is structured using a common React project layout, with the main components, pages, and services organized in their respective directories.
+
+### 🧩 Components Used
+- **Shadcn/UI Components**:
+  - `Card`: Layout and content containers
+  - `Button`: Interactive controls
+  - `Input`: User input fields
+  - `Label`: Form field labels
+  - `ScrollArea`: Scrollable content area
+
+## 🚦 API Documentation
+
 ### Configuration Endpoints
 - `POST /configure/add` - Add new system configuration
   ```json
@@ -162,48 +217,7 @@ The system uses WebSocket for real-time updates at endpoint `/websocket`. The We
 
 ## 🏗️ System Architecture
 
-### Components
-
-#### Backend Services
-- `ConfigService`: Manages system configuration and ticket availability
-  - Handles total ticket count
-  - Maintains remaining tickets
-  - Stores configuration history
-
-- `TicketingService`: Core ticketing system controller
-  - Manages vendor and customer threads
-  - Controls system start/stop operations
-  - Validates system configuration
-  - Handles concurrent ticket operations
-
-#### Real-time Communication
-- `TicketWebHandler`: WebSocket handler for real-time updates
-  - Manages WebSocket sessions
-  - Broadcasts activity logs
-  - Sends ticket status updates
-  - Handles connection lifecycle
-
-#### Thread Management
-- `Vendor Threads`: Simulate ticket vendors
-  - Controlled release rate
-  - Configurable number of vendors
-  - Individual vendor tracking
-
-- `Customer Threads`: Simulate ticket buyers
-  - Configurable retrieval rate
-  - Concurrent ticket requests
-  - Real-time status updates
-
-### Frontend Routes
-
-```typescript
-- "/" - Home page
-- "/admin" - Administrator dashboard
-- "/customer" - Customer interface
-- "/users" - User management
-- "/vendor" - Vendor dashboard
-- "/configure" - System configuration
-```
+Refer to the [System Architecture section](#-system-architecture) for details on the different components and their responsibilities.
 
 ## 💾 Database Schema
 
@@ -260,47 +274,7 @@ npm run build
 
 ## 🤝 Contributing
 
-We welcome contributions to improve the Real-time Event Ticketing System! Here's how you can contribute:
-
-1. Fork the repository
-   ```bash
-   git clone https://github.com/Ds-Jayawardhana/Ticketing_System.git
-   ```
-
-2. Create your feature branch
-   ```bash
-   git checkout -b feature/YourFeatureName
-   ```
-
-3. Make your changes
-   - Follow the existing code style and conventions
-   - Add appropriate comments and documentation
-   - Test your changes thoroughly
-   - Update the README if needed
-
-4. Commit your changes with descriptive messages
-   ```bash
-   git commit -m 'Description of the changes made'
-   ```
-
-5. Push to your branch
-   ```bash
-   git push origin feature/YourFeatureName
-   ```
-
-6. Open a Pull Request
-   - Provide a clear title and description
-   - Reference any related issues
-   - Ensure all tests pass
-   - Request review from maintainers
-
-### Development Guidelines
-- Write clean, maintainable code
-- Follow Java and React best practices
-- Include appropriate unit tests
-- Update documentation as needed
-- Keep the WebSocket implementation consistent
-- Consider performance implications with threading
+We welcome contributions to improve the Real-time Event Ticketing System! Refer to the [Contributing section](#-contributing) for guidelines on how to contribute.
 
 ## 📝 License
 
@@ -308,7 +282,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 👥 Authors
 
-- **Disandu Jayawardhana** - *Initial work & Maintenance* - [Ds-Jayawardhana](https://github.com/Ds-Jayawardhana)
+- **Dasun Shanaka Jayawardhana** - *Initial work & Maintenance* - [Ds-Jayawardhana](https://github.com/Ds-Jayawardhana)
 
 ## 🙏 Acknowledgments
 
@@ -320,6 +294,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 📞 Contact
 
-- Disandu Jayawardhana - [dsjayawardhana03@gmail.com](mailto:dsjayawardhana03@gmail.com)
+- Dasun Jayawardhana - [dsjayawardhana03@gmail.com](mailto:dsjayawardhana03@gmail.com)
 - Project Link: [https://github.com/Ds-Jayawardhana/Ticketing_System](https://github.com/Ds-Jayawardhana/Ticketing_System)
 - Issues: [https://github.com/Ds-Jayawardhana/Ticketing_System/issues](https://github.com/Ds-Jayawardhana/Ticketing_System/issues)
