@@ -85,7 +85,7 @@ const AdminDashboard = () => {
         message,
         timestamp: new Date().toLocaleTimeString()
       }
-    ].slice(-50)); // Keep last 50 activities
+    ].slice(-50)); 
   };
 
   const updateChart = (type, count) => {
