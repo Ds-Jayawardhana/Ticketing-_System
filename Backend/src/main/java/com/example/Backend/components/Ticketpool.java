@@ -5,15 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
-
 import com.example.Backend.model.ActivityLog;
-
 import com.example.Backend.model.TicketStatus;
 import com.example.Backend.services.ConfigServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class Ticketpool {
@@ -26,12 +23,17 @@ public class Ticketpool {
 
     @Autowired
     private ConfigServiceImpl configService;
-    private SimpMessagingTemplate messagingTemplate;
+
+    private final SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    public Ticketpool(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
 
     public void init(int maxCap, int totalTickets) {
         this.maxCap = maxCap;
         this.totalTickets = totalTickets;
-
     }
 
     public void addTicket(String ticket) {
@@ -40,6 +42,7 @@ public class Ticketpool {
                 if (this.tickets.size() < this.maxCap) {
                     this.tickets.add(ticket);
                     logger.info("Ticket Added: " + ticket);
+
                     TicketStatus status = new TicketStatus(
                             totalTickets,
                             tickets.size(),
@@ -53,11 +56,9 @@ public class Ticketpool {
                             "Released ticket: " + ticket
                     );
                     messagingTemplate.convertAndSend("/topic/activity", activity);
-
                 } else {
                     logger.warning("Ticket Pool is Full. Cannot add more tickets to the Ticket Pool.");
                 }
-
             }
         }
     }
@@ -67,9 +68,10 @@ public class Ticketpool {
             if (!this.isSystemRunning) {
                 return null;
             } else if (!this.tickets.isEmpty()) {
-                String ticket = (String)this.tickets.remove(0);
+                String ticket = this.tickets.remove(0);
                 ++this.totalSoldTickets;
                 logger.info("Ticket Removed: " + ticket);
+
                 TicketStatus status = new TicketStatus(
                         totalTickets,
                         tickets.size(),
@@ -83,17 +85,16 @@ public class Ticketpool {
                         "Purchased ticket: " + ticket
                 );
                 messagingTemplate.convertAndSend("/topic/activity", activity);
+
                 if (this.totalSoldTickets >= this.totalTickets) {
                     logger.info("All tickets have been sold. System will now stop.");
                     this.isSystemRunning = false;
                 }
-
                 return ticket;
             } else {
                 if (this.totalSoldTickets < this.totalTickets) {
                     logger.warning("Ticket Pool is empty. Waiting for more tickets.");
                 }
-
                 return null;
             }
         }
@@ -114,5 +115,4 @@ public class Ticketpool {
             this.isSystemRunning = false;
         }
     }
-
 }

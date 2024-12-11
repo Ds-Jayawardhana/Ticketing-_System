@@ -1,12 +1,13 @@
 package com.example.Backend.services;
-import java.util.logging.Logger;
 
+import java.util.logging.Logger;
 import com.example.Backend.components.Ticketpool;
 import com.example.Backend.components.Vendor;
 import com.example.Backend.model.Config;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.example.Backend.components.Customer;
 
 @Service
@@ -22,6 +23,12 @@ public class TicketingServiceImpl implements TicketingService {
     @Autowired
     private Ticketpool ticketpool;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    private ApplicationContext applicationContext;  // Add this for component creation
+
     public void userStart() {
         if (systemRunning) {
             logger.info("System is already running.");
@@ -35,30 +42,33 @@ public class TicketingServiceImpl implements TicketingService {
         }
 
         configService.setRemainingTickets(currentConfig.getTotalTickets());
-
-
         ticketpool.init(currentConfig.getMaxCap(), currentConfig.getTotalTickets());
-
 
         int ratePerVendor = Math.max(1, currentConfig.getReleaseRate() / currentConfig.getNoVendors());
 
         vendorThreads = new Thread[currentConfig.getNoVendors()];
         customerThreads = new Thread[currentConfig.getNoCustomers()];
 
-
+        // Create Vendor threads using Spring context
         for (int i = 0; i < currentConfig.getNoVendors(); i++) {
-            vendorThreads[i] = new Thread(new Vendor(ticketpool, ratePerVendor, i + 1, configService));
+            Vendor vendor = applicationContext.getBean(Vendor.class,
+                    ticketpool, ratePerVendor, i + 1, configService, messagingTemplate);
+            vendorThreads[i] = new Thread(vendor);
             vendorThreads[i].start();
         }
 
+        // Create Customer threads using Spring context
         for (int i = 0; i < currentConfig.getNoCustomers(); i++) {
-            customerThreads[i] = new Thread(new Customer(ticketpool, 1000 / currentConfig.getRetrievalRate(), i + 1));
+            Customer customer = applicationContext.getBean(Customer.class,
+                    ticketpool, 1000 / currentConfig.getRetrievalRate(), i + 1, messagingTemplate);
+            customerThreads[i] = new Thread(customer);
             customerThreads[i].start();
         }
 
         systemRunning = true;
         logger.info("System started with " + currentConfig.getTotalTickets() + " total tickets");
     }
+
 
     private boolean validateConfiguration(Config config) {
         if (config == null) return false;
