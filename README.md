@@ -16,21 +16,22 @@ A modern event ticketing platform built with React and Spring Boot, featuring re
 ## 🛠️ Tech Stack
 
 ### Frontend
-- React.js
-- shadcn/ui for component library
+- React.js with TypeScript
+- shadcn/ui component library
 - WebSocket client for real-time updates
 - Tailwind CSS for styling
-- React Router for navigation
+- React Router v6 for navigation
 - Context API for state management
 
 ### Backend
 - Spring Boot
-- Spring WebSocket
-- Spring Data JPA
-- Spring Security
+- Spring WebSocket with TextWebSocketHandler
+- Spring Data JPA for data persistence
+- Concurrent Hash Map for session management
 - MySQL Database
 - Maven for build management
-- Gson for CLI operations
+- Jackson for JSON processing
+- Java Logger for system logging
 
 ## 📋 Prerequisites
 
@@ -259,11 +260,47 @@ npm run build
 
 ## 🤝 Contributing
 
+We welcome contributions to improve the Real-time Event Ticketing System! Here's how you can contribute:
+
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+   ```bash
+   git clone https://github.com/Ds-Jayawardhana/Ticketing_System.git
+   ```
+
+2. Create your feature branch
+   ```bash
+   git checkout -b feature/YourFeatureName
+   ```
+
+3. Make your changes
+   - Follow the existing code style and conventions
+   - Add appropriate comments and documentation
+   - Test your changes thoroughly
+   - Update the README if needed
+
+4. Commit your changes with descriptive messages
+   ```bash
+   git commit -m 'Description of the changes made'
+   ```
+
+5. Push to your branch
+   ```bash
+   git push origin feature/YourFeatureName
+   ```
+
+6. Open a Pull Request
+   - Provide a clear title and description
+   - Reference any related issues
+   - Ensure all tests pass
+   - Request review from maintainers
+
+### Development Guidelines
+- Write clean, maintainable code
+- Follow Java and React best practices
+- Include appropriate unit tests
+- Update documentation as needed
+- Keep the WebSocket implementation consistent
+- Consider performance implications with threading
 
 ## 📝 License
 
@@ -271,16 +308,18 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 👥 Authors
 
-- **Your Name** - *Initial work* - [YourGithub](https://github.com/yourusername)
+- **Dasun Shanaka Jayawardhana** - *Initial work & Maintenance* - [Ds-Jayawardhana](https://github.com/Ds-Jayawardhana)
 
 ## 🙏 Acknowledgments
 
-- shadcn/ui for the beautiful UI components
-- Spring Framework team
-- MySQL community
-- All contributors and testers
+- [shadcn/ui](https://ui.shadcn.com/) for the modern React components
+- Spring Framework team for the robust backend framework
+- MySQL community for the reliable database system
+- All contributors who have helped improve this project
+- Special thanks to everyone who has reported issues and suggested improvements
 
 ## 📞 Contact
 
-- Your Name - [your.email@example.com](mailto:your.email@example.com)
-- Project Link: [https://github.com/yourusername/realtime-event-ticketing](https://github.com/yourusername/realtime-event-ticketing)
+- Dasun Jayawardhana - [dsjayawardhana03@gmail.com](mailto:dsjayawardhana03@gmail.com)
+- Project Link: [https://github.com/Ds-Jayawardhana/Ticketing_System](https://github.com/Ds-Jayawardhana/Ticketing_System)
+- Issues: [https://github.com/Ds-Jayawardhana/Ticketing_System/issues](https://github.com/Ds-Jayawardhana/Ticketing_System/issues)
