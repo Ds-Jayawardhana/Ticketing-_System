@@ -19,6 +19,8 @@ public class ConfigController {
         configService.saveConfiguration(config);
         return "Success";
     }
+    
+
     @GetMapping("/totTickets")
     public int getStatus() {
         Config config = configService.getLatestConfig();
