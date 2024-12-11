@@ -151,6 +151,14 @@ realtime-event-ticketing/
 
 The backend project is structured using the standard Spring Boot project layout, with the main Java code located in the `com.example.ticketing` package. The frontend project is structured using a common React project layout, with the main components, pages, and services organized in their respective directories.
 
+### 🧩 Components Used
+- **Shadcn/UI Components**:
+  - `Card`: Layout and content containers
+  - `Button`: Interactive controls
+  - `Input`: User input fields
+  - `Label`: Form field labels
+  - `ScrollArea`: Scrollable content area
+
 ## 🚦 API Documentation
 
 ### Configuration Endpoints
