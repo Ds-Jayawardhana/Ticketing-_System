@@ -2,16 +2,17 @@ package com.example.Backend.config;
 
 import com.example.Backend.model.ActivityLog;
 import com.example.Backend.model.TicketStatus;
+import com.example.Backend.model.WebSocketMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.Map;
 
 public class TicketWebHandler extends TextWebSocketHandler {
-    private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -24,21 +25,20 @@ public class TicketWebHandler extends TextWebSocketHandler {
         sessions.remove(session.getId());
     }
 
-    public void broadcastTicketStatus(TicketStatus status) {
-        com.example.Backend.model.WebSocketMessage message = new com.example.Backend.model.WebSocketMessage("TICKET_STATUS", status);
-        broadcast(message);
-    }
-
     public void broadcastActivity(ActivityLog activity) {
-        com.example.Backend.model.WebSocketMessage message = new com.example.Backend.model.WebSocketMessage("ACTIVITY", activity);
+        WebSocketMessage message = new WebSocketMessage("ACTIVITY", activity);
         broadcast(message);
     }
 
-    private void broadcast(com.example.Backend.model.WebSocketMessage message) {
-        String payload;
+    public void broadcastTicketStatus(TicketStatus status) {
+        WebSocketMessage message = new WebSocketMessage("TICKET_STATUS", status);
+        broadcast(message);
+    }
+
+    private void broadcast(WebSocketMessage message) {
         try {
-            payload = objectMapper.writeValueAsString(message);
-            TextMessage textMessage = new TextMessage(payload);
+            String jsonMessage = objectMapper.writeValueAsString(message);
+            TextMessage textMessage = new TextMessage(jsonMessage);
 
             for (WebSocketSession session : sessions.values()) {
                 if (session.isOpen()) {
@@ -49,20 +49,4 @@ public class TicketWebHandler extends TextWebSocketHandler {
             e.printStackTrace();
         }
     }
-
-    /*private void broadcast(WebSocketMessage message) {
-        String payload;
-        try {
-            payload = objectMapper.writeValueAsString(message);
-            TextMessage textMessage = new TextMessage(payload);
-
-            for (WebSocketSession session : sessions.values()) {
-                if (session.isOpen()) {
-                    session.sendMessage(textMessage);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 }

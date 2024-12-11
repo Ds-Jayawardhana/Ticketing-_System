@@ -1,10 +1,12 @@
 package com.example.Backend.components;
 
 import java.util.logging.Logger;
+
+import com.example.Backend.config.TicketWebHandler;
 import com.example.Backend.services.ConfigServiceImpl;
 import com.example.Backend.model.ActivityLog;
 import org.springframework.context.annotation.Scope;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,18 +17,18 @@ public class Vendor implements Runnable {
     private final int releaseRate;
     private final int vendorId;
     private final ConfigServiceImpl configService;
-    private final SimpMessagingTemplate messagingTemplate;
+    private final TicketWebHandler ticketWebHandler;
 
     public Vendor(Ticketpool ticketpool,
                   int releaseRate,
                   int vendorId,
                   ConfigServiceImpl configService,
-                  SimpMessagingTemplate messagingTemplate) {
+                  TicketWebHandler ticketWebHandler) {
         this.ticketPool = ticketpool;
         this.releaseRate = releaseRate;
         this.vendorId = vendorId;
         this.configService = configService;
-        this.messagingTemplate = messagingTemplate;
+        this.ticketWebHandler = ticketWebHandler;
     }
 
     private void sendActivityMessage(String message) {
@@ -35,7 +37,7 @@ public class Vendor implements Runnable {
                 vendorId,
                 message
         );
-        messagingTemplate.convertAndSend("/topic/activity", activity);
+        ticketWebHandler.broadcastActivity(activity);  // Using ticketWebHandler instead
         logger.info("Vendor " + vendorId + ": " + message);
     }
 

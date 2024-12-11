@@ -1,5 +1,6 @@
 package com.example.Backend.components;
 
+import com.example.Backend.config.TicketWebHandler;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,16 +14,16 @@ public class Customer implements Runnable {
     private final Ticketpool ticketpool;
     private final int retrievalInterval;
     private final int customerId;
-    private final SimpMessagingTemplate messagingTemplate;
+    private final TicketWebHandler ticketWebHandler;
 
     public Customer(Ticketpool ticketpool,
                     int retrievalInterval,
                     int customerId,
-                    SimpMessagingTemplate messagingTemplate) {
+                    TicketWebHandler ticketWebHandler) {
         this.ticketpool = ticketpool;
         this.retrievalInterval = retrievalInterval;
         this.customerId = customerId;
-        this.messagingTemplate = messagingTemplate;
+        this.ticketWebHandler = ticketWebHandler;
     }
 
     private void sendActivityMessage(String message) {
@@ -31,9 +32,10 @@ public class Customer implements Runnable {
                 customerId,
                 message
         );
-        messagingTemplate.convertAndSend("/topic/activity", activity);
+        ticketWebHandler.broadcastActivity(activity);  // Using ticketWebHandler instead
         logger.info("Customer " + customerId + ": " + message);
     }
+
 
     @Override
     public void run() {

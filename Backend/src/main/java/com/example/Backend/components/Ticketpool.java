@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 
 import com.example.Backend.model.ActivityLog;
 import com.example.Backend.model.TicketStatus;
+import com.example.Backend.config.TicketWebHandler;
 import com.example.Backend.services.ConfigServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,11 +24,11 @@ public class Ticketpool {
     @Autowired
     private ConfigServiceImpl configService;
 
-    private final SimpMessagingTemplate messagingTemplate;
-
     @Autowired
-    public Ticketpool(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
+    private TicketWebHandler ticketWebHandler;  // Changed from SimpMessagingTemplate to TicketWebHandler
+
+    public Ticketpool(TicketWebHandler ticketWebHandler) {  // Updated constructor
+        this.ticketWebHandler = ticketWebHandler;
     }
 
     public void init(int maxCap, int totalTickets) {
@@ -48,16 +48,16 @@ public class Ticketpool {
                             tickets.size(),
                             totalSoldTickets
                     );
-                    messagingTemplate.convertAndSend("/topic/ticket-status", status);
+                    ticketWebHandler.broadcastTicketStatus(status);  // Using ticketWebHandler instead
 
                     ActivityLog activity = new ActivityLog(
                             "Vendor",
                             0,
                             "Released ticket: " + ticket
                     );
-                    messagingTemplate.convertAndSend("/topic/activity", activity);
+                    ticketWebHandler.broadcastActivity(activity);  // Using ticketWebHandler instead
                 } else {
-                    logger.warning("Ticket Pool is Full. Cannot add more tickets to the Ticket Pool.");
+                    logger.warning("Ticket Pool is Full. Cannot add more tickets.");
                 }
             }
         }
@@ -77,14 +77,14 @@ public class Ticketpool {
                         tickets.size(),
                         totalSoldTickets
                 );
-                messagingTemplate.convertAndSend("/topic/ticket-status", status);
+                ticketWebHandler.broadcastTicketStatus(status);  // Using ticketWebHandler instead
 
                 ActivityLog activity = new ActivityLog(
                         "Customer",
                         0,
                         "Purchased ticket: " + ticket
                 );
-                messagingTemplate.convertAndSend("/topic/activity", activity);
+                ticketWebHandler.broadcastActivity(activity);  // Using ticketWebHandler instead
 
                 if (this.totalSoldTickets >= this.totalTickets) {
                     logger.info("All tickets have been sold. System will now stop.");

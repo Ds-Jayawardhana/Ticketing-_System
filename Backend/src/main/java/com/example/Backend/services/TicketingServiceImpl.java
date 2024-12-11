@@ -4,10 +4,11 @@ import java.util.logging.Logger;
 import com.example.Backend.components.Ticketpool;
 import com.example.Backend.components.Vendor;
 import com.example.Backend.model.Config;
+import com.example.Backend.config.TicketWebHandler;
+import com.example.Backend.model.ActivityLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.example.Backend.components.Customer;
 
 @Service
@@ -24,20 +25,26 @@ public class TicketingServiceImpl implements TicketingService {
     private Ticketpool ticketpool;
 
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private TicketWebHandler ticketWebHandler;  // Changed from SimpMessagingTemplate
 
     @Autowired
-    private ApplicationContext applicationContext;  // Add this for component creation
+    private ApplicationContext applicationContext;
 
     public void userStart() {
         if (systemRunning) {
             logger.info("System is already running.");
+            ticketWebHandler.broadcastActivity(
+                    new ActivityLog("System", 0, "System is already running")
+            );
             return;
         }
 
         Config currentConfig = configService.getLatestConfig();
         if (!validateConfiguration(currentConfig)) {
             logger.warning("Invalid configuration");
+            ticketWebHandler.broadcastActivity(
+                    new ActivityLog("System", 0, "Invalid configuration")
+            );
             return;
         }
 
@@ -52,7 +59,7 @@ public class TicketingServiceImpl implements TicketingService {
         // Create Vendor threads using Spring context
         for (int i = 0; i < currentConfig.getNoVendors(); i++) {
             Vendor vendor = applicationContext.getBean(Vendor.class,
-                    ticketpool, ratePerVendor, i + 1, configService, messagingTemplate);
+                    ticketpool, ratePerVendor, i + 1, configService, ticketWebHandler);  // Updated to use ticketWebHandler
             vendorThreads[i] = new Thread(vendor);
             vendorThreads[i].start();
         }
@@ -60,15 +67,18 @@ public class TicketingServiceImpl implements TicketingService {
         // Create Customer threads using Spring context
         for (int i = 0; i < currentConfig.getNoCustomers(); i++) {
             Customer customer = applicationContext.getBean(Customer.class,
-                    ticketpool, 1000 / currentConfig.getRetrievalRate(), i + 1, messagingTemplate);
+                    ticketpool, 1000 / currentConfig.getRetrievalRate(), i + 1, ticketWebHandler);  // Updated to use ticketWebHandler
             customerThreads[i] = new Thread(customer);
             customerThreads[i].start();
         }
 
         systemRunning = true;
-        logger.info("System started with " + currentConfig.getTotalTickets() + " total tickets");
+        String startMessage = "System started with " + currentConfig.getTotalTickets() + " total tickets";
+        logger.info(startMessage);
+        ticketWebHandler.broadcastActivity(
+                new ActivityLog("System", 0, startMessage)
+        );
     }
-
 
     private boolean validateConfiguration(Config config) {
         if (config == null) return false;
@@ -82,6 +92,9 @@ public class TicketingServiceImpl implements TicketingService {
     public void stopSystem() {
         if (!systemRunning) {
             logger.info("System is not running.");
+            ticketWebHandler.broadcastActivity(
+                    new ActivityLog("System", 0, "System is not running")
+            );
             return;
         }
 
@@ -106,7 +119,10 @@ public class TicketingServiceImpl implements TicketingService {
         vendorThreads = null;
         customerThreads = null;
 
-        logger.info("System stopped successfully.");
+        String stopMessage = "System stopped successfully";
+        logger.info(stopMessage);
+        ticketWebHandler.broadcastActivity(
+                new ActivityLog("System", 0, stopMessage)
+        );
     }
-
 }
