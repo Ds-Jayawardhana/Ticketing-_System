@@ -308,7 +308,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 👥 Authors
 
-- **Dasun Shanaka Jayawardhana** - *Initial work & Maintenance* - [Ds-Jayawardhana](https://github.com/Ds-Jayawardhana)
+- **Disandu Jayawardhana** - *Initial work & Maintenance* - [Ds-Jayawardhana](https://github.com/Ds-Jayawardhana)
 
 ## 🙏 Acknowledgments
 
@@ -320,6 +320,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 📞 Contact
 
-- Dasun Jayawardhana - [dsjayawardhana03@gmail.com](mailto:dsjayawardhana03@gmail.com)
+- Disandu Jayawardhana - [dsjayawardhana03@gmail.com](mailto:dsjayawardhana03@gmail.com)
 - Project Link: [https://github.com/Ds-Jayawardhana/Ticketing_System](https://github.com/Ds-Jayawardhana/Ticketing_System)
 - Issues: [https://github.com/Ds-Jayawardhana/Ticketing_System/issues](https://github.com/Ds-Jayawardhana/Ticketing_System/issues)
