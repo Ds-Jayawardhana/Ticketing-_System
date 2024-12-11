@@ -15,16 +15,13 @@ const EventTicketingSystem = () => {
   const [noVendors, setnoVendors] = useState('');
   const [noCustomers,setnoCustomers] = useState('');
 
-  const handleConfigureClick=(e)=>{
-    e.preventDefault()
+  const handleConfigureClick=()=>{
     const configure={totalTickets,releaseRate,retrievalRate,maxCap,noVendors,noCustomers}
     console.log(configure)
     fetch("http://localhost:8080/configure/add",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify(configure)
-
-
     })
 
     navigate('/Admin');

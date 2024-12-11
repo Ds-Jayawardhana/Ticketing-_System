@@ -15,7 +15,73 @@ const AdminDashboard = () => {
   const [chartData, setChartData] = useState([
     { time: new Date().toLocaleTimeString(), customerRate: 0, vendorRate: 0 }
   ]);
+  
   const wsRef = useRef(null);
+  const reconnectTimeoutRef = useRef(null);
+
+  const connectWebSocket = () => {
+    try {
+      const ws = new WebSocket('ws://localhost:8080/websocket');
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        console.log('Connected to WebSocket');
+        addActivity('System', 0, 'Connected to server');
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log('Received message:', data);
+          
+          // Handle activity message
+          if (data.type === 'ACTIVITY') {
+            const activity = data.payload;
+            
+            if (activity.actorType === 'Vendor' && activity.action.includes('Released')) {
+              const match = activity.action.match(/Released (\d+) tickets/);
+              if (match) {
+                const count = parseInt(match[1]);
+                setTicketsReleased(prev => prev + count);
+                updateChart('vendorRate', count);
+              }
+            } else if (activity.actorType === 'Customer' && activity.action.includes('Retrieved')) {
+              setTicketsPurchased(prev => prev + 1);
+              updateChart('customerRate', 1);
+            }
+            
+            addActivity(activity.actorType, activity.actorId, activity.action);
+          }
+          
+          // Handle ticket status updates
+          else if (data.type === 'TICKET_STATUS') {
+            const status = data.payload;
+            setTicketsReleased(status.ticketsReleased);
+            setTicketsPurchased(status.ticketsPurchased);
+          }
+        } catch (error) {
+          console.error('Error processing message:', error);
+        }
+      };
+
+      ws.onclose = () => {
+        console.log('WebSocket disconnected');
+        addActivity('System', 0, 'Disconnected from server');
+        
+        // Attempt to reconnect after 5 seconds
+        reconnectTimeoutRef.current = setTimeout(connectWebSocket, 5000);
+      };
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        addActivity('System', 0, 'Connection error occurred');
+      };
+    } catch (error) {
+      console.error('Error creating WebSocket:', error);
+      // Attempt to reconnect after 5 seconds
+      reconnectTimeoutRef.current = setTimeout(connectWebSocket, 5000);
+    }
+  };
 
   useEffect(() => {
     // Fetch initial total tickets
@@ -26,52 +92,16 @@ const AdminDashboard = () => {
       })
       .catch(error => console.error('Error fetching total tickets:', error));
 
-    // Set up WebSocket connection
-    const ws = new WebSocket('ws://localhost:8080/websocket');
-    wsRef.current = ws;
+    // Initialize WebSocket connection
+    connectWebSocket();
 
-    ws.onopen = () => {
-      console.log('Connected to WebSocket');
-      addActivity('System', 0, 'Connected to server');
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log('Received message:', data);
-        
-        // Add the message to activities
-        addActivity(data.actorType, data.actorId, data.message);
-
-        // Update statistics based on the message
-        if (data.actorType === 'Vendor' && data.message.includes('Released')) {
-          const count = parseInt(data.message.match(/\d+/)?.[0]) || 1;
-          setTicketsReleased(prev => prev + count);
-          updateChart('vendorRate', count);
-        } 
-        else if (data.actorType === 'Customer' && data.message.includes('Retrieved')) {
-          setTicketsPurchased(prev => prev + 1);
-          updateChart('customerRate', 1);
-        }
-      } catch (error) {
-        console.error('Error processing message:', error);
-      }
-    };
-
-    ws.onclose = () => {
-      console.log('WebSocket disconnected');
-      addActivity('System', 0, 'Disconnected from server');
-    };
-
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-      addActivity('System', 0, 'Connection error occurred');
-    };
-
-    // Cleanup on unmount
+    // Cleanup on component unmount
     return () => {
       if (wsRef.current) {
         wsRef.current.close();
+      }
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
       }
     };
   }, []);
@@ -85,7 +115,7 @@ const AdminDashboard = () => {
         message,
         timestamp: new Date().toLocaleTimeString()
       }
-    ].slice(-50)); 
+    ].slice(-50));  // Keep only the last 50 activities
   };
 
   const updateChart = (type, count) => {
@@ -99,15 +129,21 @@ const AdminDashboard = () => {
         vendorRate: type === 'vendorRate' ? 
           (lastEntry.vendorRate + count) : lastEntry.vendorRate
       };
-      return [...prev.slice(-4), newData];
+      return [...prev.slice(-4), newData];  // Keep only last 5 data points
     });
   };
 
   const handleStartBtn = async () => {
     try {
       const response = await fetch('http://localhost:8080/ticketing/start', {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        mode: 'cors'  // Explicitly set CORS mode
       });
+      
 
       if (response.ok) {
         setSystemStatus('RUNNING');
